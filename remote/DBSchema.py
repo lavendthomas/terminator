@@ -44,3 +44,9 @@ class Column:
 
     def __repr__(self):
         return str(self)
+
+    def __lt__(self, other):
+        return (self.name, self.type) < (other.name, other.type)
+
+    def __gt__(self, other):
+        return (self.name, self.type) > (other.name, other.type)

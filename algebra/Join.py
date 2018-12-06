@@ -7,7 +7,7 @@ class Join(Expr):
     def __init__(self, expr1, expr2):
         self.nodes = [expr1, expr2]
 
-    def toSQL(self):
+    def toSQL(self, dbschema):
         return ""
 
     def get_attributes(self, dbschema):

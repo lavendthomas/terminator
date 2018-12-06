@@ -3,7 +3,7 @@ class Relation:
     def __init__(self, table):
         self.table = str(table)
 
-    def toSQL(self):
+    def toSQL(self, dbschema):
         return self.table
 
     def get_attributes(self, dbschema):
