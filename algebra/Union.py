@@ -24,7 +24,7 @@ class Union(Expr):
         for i in range(len(a)):
             select_attributes += a[i].get_name()
             if i != len(a) -1 :
-                select_attributes += ","
+                select_attributes += ", "
 
         return "(SELECT " + select_attributes + " FROM (" + self.nodes[0].toSQL(dbschema) + ")) UNION (SELECT " + select_attributes + " FROM (" + self.nodes[1].toSQL(dbschema) + "))"
 

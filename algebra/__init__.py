@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     db = DBSchema()
     db.add_table("users",
-                 ["id", "name" ,  "pw"],
+                 ["id", "name",  "pw"],
                  ["TEXT", "TEXT", "TEXT"])
     db.add_table("users2",
                  ["name", "id", "pw"],
@@ -26,12 +26,13 @@ if __name__ == "__main__":
     print(Constant("test").toSQL(db))
     print(Attribute("test").toSQL(db))
 
-    printQuery(SelectionConstant(Attribute("city"),Constant("Mons"),Relation("CITIES")), db)
+    printQuery(SelectionConstant(Attribute("city"), Constant("Mons"), Relation("CITIES")), db)
 
-    exp = SelectionAttribute(Attribute("id"), Attribute("name"), Relation("users"))
-    print(exp.get_attributes(db))
+    exp0 = SelectionAttribute(Attribute("id"), Attribute("name"), Relation("users"))
+    exp1 = SelectionAttribute(Attribute("id"), Attribute("name"), Relation("users2"))
+    print(exp0.get_attributes(db))
 
-    exp2 = Rename(Attribute("name"), Attribute("username"), exp)
+    exp2 = Rename(Attribute("name"), Attribute("username"), exp0)
 
     print(exp2.get_attributes(db))
 
@@ -43,9 +44,9 @@ if __name__ == "__main__":
 
     print(exp4.get_attributes(db))
 
-    print(Join(exp2,exp3).get_attributes(db))
+    print(Join(exp2, exp3).get_attributes(db))
 
-    printQuery(Union(exp, exp), db)
+    printQuery(Union(exp0, exp0), db)
 
 
     #TODO Unit tests to do : Check if the union correctly checks the attributs if they are not in the same order
@@ -55,3 +56,7 @@ if __name__ == "__main__":
     printQuery(Rename(Attribute("name"), Attribute("username"), Relation("users2")), db)
 
     printQuery(Project(["pw", "name"], Relation("users2")), db)
+
+    printQuery(Difference(exp0, exp1), db)
+
+    printQuery(Join(exp0,exp2),db)
