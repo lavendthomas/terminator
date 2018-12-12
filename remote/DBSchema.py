@@ -18,6 +18,9 @@ class DBSchema:
     def delete_table(self, name):
         self.tables.pop(name)
 
+    def is_table(self, name):
+        return name in self.tables.keys()
+
     def get_attributes(self, table):
         return self.tables[table]
 
