@@ -13,6 +13,15 @@ class Project(Expression):
     def toSQL(self, dbschema):
         attrs = deepcopy(self.expr.get_attributes(dbschema))
 
+        for col in self.columns:
+            if col.get_name() not in map(lambda x: x.get_name(), attrs):
+                print_attributes = ""
+                for i in range(len(self.columns)):
+                    print_attributes += self.columns[i]
+                    if i != len(self.columns) - 1:
+                        print_attributes += ", "
+                raise Exception("One of attributes " + print_attributes + " is not in the table.")
+
         select_attributes = ""
         for i in range(len(self.columns)):
             if self.columns[i] not in map(lambda x: x.get_name(), attrs):

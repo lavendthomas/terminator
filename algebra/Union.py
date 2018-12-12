@@ -15,12 +15,13 @@ class Union(Expression):
         attrs2.sort()
 
         if len(attrs1) != len(attrs2):
-            raise Exception("The number of attributes of " + str(self.expr1) + " and " + str(self.expr2) +
+            raise Exception("The counts of attributes of " + str(self.expr1) + " and " + str(self.expr2) +
                             " are not the same.")
 
         for (att1, att2) in zip(attrs1, attrs2):
             if att1 != att2:
-                raise Exception("Not same types or names and Fuck you!")
+                raise Exception("Attributes " + att1.get_attr() + " and " + att2.get_attr() + " are "
+                                "not of same type or do not have same names.")
 
         select_attributes = ""
         for i in range(len(attrs1)):
@@ -32,5 +33,5 @@ class Union(Expression):
                select_attributes + " FROM (" + self.expr2.toSQL(dbschema) + "))"
 
     def get_attributes(self, dbschema):
-        return  deepcopy(self.expr1.getAttributes(dbschema))
+        return  deepcopy(self.expr1.get_attributes(dbschema))
 

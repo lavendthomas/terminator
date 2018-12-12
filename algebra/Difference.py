@@ -15,12 +15,13 @@ class Difference(Expression):
         attrs2.sort()
 
         if len(attrs1) != len(attrs2):
-            raise Exception("The numbers of attributes of " + str(self.expr1) + " and " + str(self.expr2) +
+            raise Exception("The counts of attributes of " + str(self.expr1) + " and " + str(self.expr2) +
                             " are not the same.")
 
         for (att1, att2) in zip(attrs1, attrs2):
             if att1 != att2:
-                raise Exception("Not same types or names.")
+                raise Exception("Attributes " + att1.get_attr() + " and " + att2.get_attr() + " are "
+                                "not of same type or do not have same names.")
 
         select_attributes1 = ""
         select_attributes2 = ""
@@ -39,4 +40,4 @@ class Difference(Expression):
                conditions + ")"
 
     def get_attributes(self, dbschema):
-        return deepcopy(self.expr1.getAttributes(dbschema))
+        return deepcopy(self.expr1.get_attributes(dbschema))

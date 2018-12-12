@@ -15,3 +15,6 @@ class Constant:
 
     def toSQL(self, dbschema):
         return '"' + self.cst + '"'
+
+    def get_cst(self):
+        return self.cst
