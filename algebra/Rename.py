@@ -1,20 +1,23 @@
-from algebra.Expression import Expression as Expr
+from algebra.Expression import Expression
+from algebra.Attribute import Attribute
 from remote.DBSchema import *
 from copy import deepcopy
 
 
-class Rename(Expr):
+class Rename(Expression):
 
-    def __init__(self, from_attr, to_attr, expr):
-        self.nodes = [from_attr, to_attr, expr]
+    def __init__(self, from_attr: Attribute, to_attr: Attribute, expr: Expression):
+        self.from_attr = from_attr
+        self.to_attr = to_attr
+        self.expr = expr
 
     def toSQL(self, dbschema):
-        attrs = deepcopy(self.nodes[2].get_attributes(dbschema))
+        attrs = deepcopy(self.expr.get_attributes(dbschema))
 
         for i in range(len(attrs)):
-            if attrs[i].get_name() == self.nodes[0].get_attr():
+            if attrs[i].get_name() == self.from_attr.get_attr():
                 from_col = Column(attrs[i].get_name(), attrs[i].get_type())
-                to_col = Column(self.nodes[1].get_attr(), attrs[i].get_type())
+                to_col = Column(self.to_attr.get_attr(), attrs[i].get_type())
                 attrs[i] = to_col
                 break
 
@@ -27,14 +30,14 @@ class Rename(Expr):
             if i != len(attrs)-1:
                 select_attributes += ", "
 
-        return "SELECT " + select_attributes + " FROM (" + self.nodes[2].toSQL(dbschema) + ")"
+        return "SELECT " + select_attributes + " FROM (" + self.expr.toSQL(dbschema) + ")"
 
     def get_attributes(self, dbschema):
-        attrs = deepcopy(self.nodes[2].get_attributes(dbschema))
+        attrs = deepcopy(self.expr.get_attributes(dbschema))
 
         for i in range(len(attrs)):
-            if attrs[i].get_name() == self.nodes[0].get_attr():
-                attrs[i] = Column(self.nodes[1].get_attr(), attrs[i].get_type())
+            if attrs[i].get_name() == self.from_attr.get_attr():
+                attrs[i] = Column(self.to_attr.get_attr(), attrs[i].get_type())
                 break
 
         return attrs
