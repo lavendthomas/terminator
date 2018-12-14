@@ -32,6 +32,7 @@ if __name__ == "__main__":
     printQuery(SelectionConstant(Attribute("city"), Constant("Mons"), Relation("CITIES")), db)
 
     exp0 = SelectionAttribute(Attribute("id"), Attribute("name"), Relation("users"))
+    printQuery(exp0, db)
     exp1 = SelectionAttribute(Attribute("id"), Attribute("name"), Relation("users2"))
     print(exp0.get_attributes(db))
 
