@@ -4,11 +4,13 @@ class Constant:
         self.cst = str(cst)
 
         if isinstance(cst, int):
-            self.type = "INT"
+            self.type = "INTEGER"
         elif isinstance(cst, float):
-            self.type = "FLOAT"
+            self.type = "REAL"
         elif isinstance(cst, str):
             self.type = "TEXT"
+        else:
+            self.type = "NONE"      # TODO handle unknown formats
 
     def get_type(self):
         return self.type

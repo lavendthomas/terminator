@@ -22,6 +22,9 @@ if __name__ == "__main__":
     db.add_table("users2",
                  ["name", "id", "pw"],
                  ["TEXT", "TEXT", "TEXT"])
+    db.add_table("CITIES",
+                 ["city"],
+                 ["TEXT"])
 
     print(Constant("test").toSQL(db))
     print(Attribute("test").toSQL(db))
