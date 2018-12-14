@@ -20,3 +20,6 @@ class Constant:
 
     def get_cst(self):
         return self.cst
+
+    def __str__(self):
+        return self.__class__.__name__ + "(\"" + self.cst + "\")"

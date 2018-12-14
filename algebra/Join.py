@@ -53,3 +53,6 @@ class Join(Expression):
                 new_attrs.append(attr)
 
         return new_attrs
+
+    def __str__(self):
+        return self.__class__.__name__ + "(" + str(self.expr1) + ", " + str(self.expr2) + ")"

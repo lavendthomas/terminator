@@ -11,3 +11,6 @@ class Expression:
     """
     def get_attributes(self, dbschema):
         pass
+
+    def __str__(self):
+        pass

@@ -13,19 +13,10 @@ class Project(Expression):
     def toSQL(self, dbschema):
         attrs = deepcopy(self.expr.get_attributes(dbschema))
 
-        for col in self.columns:
-            if col not in map(lambda x: x.get_name(), attrs):
-                print_attributes = ""
-                for i in range(len(self.columns)):
-                    print_attributes += self.columns[i]
-                    if i != len(self.columns) - 1:
-                        print_attributes += ", "
-                raise Exception("One of attributes " + print_attributes + " is not in the table.")
-
         select_attributes = ""
         for i in range(len(self.columns)):
             if self.columns[i] not in map(lambda x: x.get_name(), attrs):
-                raise Exception(self.columns[i] + " not in " + str(self.expr))  # Check str(self.nodes[1][i]) ???
+                raise Exception(self.columns[i] + " not in " + str(self.expr))
 
             select_attributes += self.columns[i]
             if i != len(self.columns)-1:
@@ -41,3 +32,14 @@ class Project(Expression):
                 new_attr.append(attrs[i])
 
         return new_attr
+
+    def __str__(self):
+        col_str = "["
+        for i in range(len(self.columns)):
+            col_str += "\"" + str(self.columns[i]) + "\""
+            if i != len(self.columns)-1:
+                col_str += ", "
+            else:
+                col_str += "]"
+
+        return self.__class__.__name__ + "(" + col_str + ", " + str(self.expr) + ")"

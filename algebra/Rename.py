@@ -46,3 +46,7 @@ class Rename(Expression):
                 break
 
         return attrs
+
+    def __str__(self):
+        return self.__class__.__name__ + "(" + str(self.from_attr) + ", " + str(self.to_attr) + ", " +\
+               str(self.expr) + ")"

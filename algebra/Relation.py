@@ -14,3 +14,7 @@ class Relation(Expression):
 
     def get_attributes(self, dbschema):
         return dbschema.get_attributes(self.table)
+
+    def __str__(self):
+        return "Relation(\"" + self.table + "\")"
+

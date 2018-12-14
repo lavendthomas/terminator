@@ -41,3 +41,6 @@ class Difference(Expression):
 
     def get_attributes(self, dbschema):
         return deepcopy(self.expr1.get_attributes(dbschema))
+
+    def __str__(self):
+        return self.__class__.__name__ + "(" + str(self.expr1) + ", " + str(self.expr2) + ")"

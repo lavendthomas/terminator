@@ -8,3 +8,6 @@ class Attribute:
 
     def get_attr(self):
         return self.attr
+
+    def __str__(self):
+        return self.__class__.__name__ + "(\"" + self.attr + "\")"

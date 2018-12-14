@@ -29,6 +29,7 @@ if __name__ == "__main__":
     print(Constant("test").toSQL(db))
     print(Attribute("test").toSQL(db))
 
+
     printQuery(SelectionConstant(Attribute("city"), Constant("Mons"), Relation("CITIES")), db)
 
     exp0 = SelectionAttribute(Attribute("id"), Attribute("name"), Relation("users"))
@@ -63,3 +64,7 @@ if __name__ == "__main__":
     printQuery(Difference(exp0, exp1), db)
 
     printQuery(Join(exp0,exp2),db)
+
+    experiment = SelectionConstant(Attribute("city"), Constant("Mons"), Relation("CITIES"))
+    experiment2 = Rename(Attribute("name"), Attribute("username"), Relation("users2"))
+    print("\n\n\n\n" + experiment2.__str__())
