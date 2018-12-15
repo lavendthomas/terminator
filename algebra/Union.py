@@ -1,5 +1,6 @@
 from algebra.Expression import Expression
 from copy import deepcopy
+from algebra.Exceptions import *
 
 
 class Union(Expression):
@@ -15,13 +16,13 @@ class Union(Expression):
         attrs2.sort()
 
         if len(attrs1) != len(attrs2):
-            raise Exception("The counts of attributes of " + str(self.expr1) + " and " + str(self.expr2) +
-                            " are not the same.")
+            raise NotMatchingAttributesException("The counts of attributes of " + str(self.expr1) + " and " +
+                                                 str(self.expr2) + " are not the same.")
 
         for (att1, att2) in zip(attrs1, attrs2):
             if att1 != att2:
-                raise Exception("Attributes " + att1.get_attr() + " and " + att2.get_attr() + " are "
-                                "not of same type or do not have same names.")
+                raise NotMatchingAttributesException("Attributes " + att1.get_attr() + " and " + att2.get_attr() +
+                                                     " are not of same type or do not have same names.")
 
         select_attributes = ""
         for i in range(len(attrs1)):
@@ -33,7 +34,7 @@ class Union(Expression):
                select_attributes + " FROM (" + self.expr2.toSQL(dbschema) + "))"
 
     def get_attributes(self, dbschema):
-        return  deepcopy(self.expr1.get_attributes(dbschema))
+        return deepcopy(self.expr1.get_attributes(dbschema))
 
     def __str__(self):
         return self.__class__.__name__ + "(" + str(self.expr1) + ", " + str(self.expr2) + ")"

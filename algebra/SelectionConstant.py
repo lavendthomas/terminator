@@ -3,6 +3,7 @@ from algebra.Attribute import Attribute
 from algebra.Constant import Constant
 from algebra.Expression import Expression
 from copy import deepcopy
+from algebra.Exceptions import *
 
 
 class SelectionConstant(Expression):
@@ -15,7 +16,7 @@ class SelectionConstant(Expression):
     def toSQL(self, dbschema):
         attributes = self.expr.get_attributes(dbschema)
         if self.attr.get_attr() not in map(lambda x:x.get_name(), attributes):
-            raise Exception("Attribute " + self.attr.get_attr() + " is not in the table.")
+            raise InvalidAttributeException("Attribute " + self.attr.get_attr() + " is not in the table.")
 
         attr_type = ""
         for col in attributes:
@@ -24,9 +25,9 @@ class SelectionConstant(Expression):
                 break
 
         if attr_type != self.cst.get_type():
-            raise Exception("Constant " + self.cst.get_cst() + " is not the same type as the attribute. \n "
-                            "Attribute " + self.attr.get_attr() + " is of type " + attr_type + " and the "
-                            "constant of type " + self.cst.get_type() + ".")
+            raise DifferentTypeException("Constant " + self.cst.get_cst() + " is not the same type as the attribute.\n "
+                                         "Attribute " + self.attr.get_attr() + " is of type " + attr_type + " and the "
+                                         "constant of type " + self.cst.get_type() + ".")
 
         return "SELECT * FROM " + self.expr.toSQL(dbschema) + " WHERE " + self.attr.toSQL(dbschema) + " = " +\
                self.cst.toSQL(dbschema)

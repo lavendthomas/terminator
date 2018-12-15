@@ -1,5 +1,6 @@
 from algebra.Expression import Expression
 from copy import deepcopy
+from algebra.Exceptions import *
 
 
 class Join(Expression):

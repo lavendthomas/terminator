@@ -2,6 +2,7 @@ from algebra.Expression import Expression
 from algebra.Attribute import Attribute
 from remote.DBSchema import *
 from copy import deepcopy
+from algebra.Exceptions import *
 
 
 class Rename(Expression):
@@ -14,7 +15,7 @@ class Rename(Expression):
     def toSQL(self, dbschema):
         attrs = deepcopy(self.expr.get_attributes(dbschema))
         if self.to_attr.get_attr() in map(lambda x: x.get_name(), attrs):
-            raise Exception("Attribute " + self.to_attr.get_attr() + " is already in the table.")
+            raise InvalidAttributeException("Attribute " + self.to_attr.get_attr() + " is already in the table.")
 
         from_col = None
         to_col = None

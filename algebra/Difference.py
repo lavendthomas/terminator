@@ -1,5 +1,6 @@
 from algebra.Expression import Expression
 from copy import deepcopy
+from algebra.Exceptions import *
 
 
 class Difference(Expression):
@@ -15,13 +16,13 @@ class Difference(Expression):
         attrs2.sort()
 
         if len(attrs1) != len(attrs2):
-            raise Exception("The counts of attributes of " + str(self.expr1) + " and " + str(self.expr2) +
-                            " are not the same.")
+            raise NotMatchingAttributesException("The counts of attributes of " + str(self.expr1) + " and " +
+                                                 str(self.expr2) + " are not the same.")
 
         for (att1, att2) in zip(attrs1, attrs2):
             if att1 != att2:
-                raise Exception("Attributes " + att1.get_attr() + " and " + att2.get_attr() + " are "
-                                "not of same type or do not have same names.")
+                raise NotMatchingAttributesException("Attributes " + att1.get_attr() + " and " + att2.get_attr() +
+                                                     " are not of same type or do not have same names.")
 
         select_attributes1 = ""
         select_attributes2 = ""

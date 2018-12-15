@@ -1,5 +1,7 @@
 from algebra.Expression import Expression
 from copy import deepcopy
+from algebra.Exceptions import *
+
 
 class Project(Expression):
 
@@ -16,7 +18,7 @@ class Project(Expression):
         select_attributes = ""
         for i in range(len(self.columns)):
             if self.columns[i] not in map(lambda x: x.get_name(), attrs):
-                raise Exception(self.columns[i] + " not in " + str(self.expr))
+                raise InvalidAttributeException(self.columns[i] + " not in " + str(self.expr))
 
             select_attributes += self.columns[i]
             if i != len(self.columns)-1:
