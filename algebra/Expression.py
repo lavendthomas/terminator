@@ -3,6 +3,7 @@ from algebra.Constant import Constant
 from algebra.Exceptions import *
 from remote.DBSchema import *
 from copy import deepcopy
+from typing import Union
 
 
 class Expression:
@@ -23,12 +24,35 @@ class Expression:
         return ""
 
 
+class Relation(Expression):
+
+    def __init__(self, table):
+        self.table = str(table)
+
+    def toSQL(self, dbschema):
+        if not dbschema.is_table(self.table):
+            raise Exception("Table " + self.table + " is not in the database.")
+
+        return self.table
+
+    def get_attributes(self, dbschema):
+        return dbschema.get_attributes(self.table)
+
+    def __str__(self):
+        return "Relation(\"" + self.table + "\")"
+
+
 class SelectionConstant(Expression):
 
-    def __init__(self, attr: Attribute, cst: Constant, expr: Expression):
-        super.__init__()
-        self.attr = attr
-        self.cst = cst
+    def __init__(self, attr: Union[Attribute, str], cst: Union[Constant, str], expr: Expression):
+        if isinstance(attr, str):
+            self.attr = Attribute(attr)
+        else:
+            self.attr = attr
+        if isinstance(cst, str):
+            self.cst = Constant(cst)
+        else:
+            self.cst = cst
         self.expr = expr
 
     def toSQL(self, dbschema):
@@ -59,17 +83,23 @@ class SelectionConstant(Expression):
 
 class SelectionAttribute(Expression):
 
-    def __init__(self, attr1: Attribute, attr2: Attribute, expr: Expression):
-        self.attr1 = attr1
-        self.attr2 = attr2
+    def __init__(self, attr1: Union[Attribute, str], attr2: Union[Attribute, str], expr: Expression):
+        if isinstance(attr1, str):
+            self.attr1 = Attribute(attr1)
+        else:
+            self.attr1 = attr1
+        if isinstance(attr2, str):
+            self.attr2 = Attribute(attr2)
+        else:
+            self.attr2 = attr2
         self.expr = expr
 
     def toSQL(self, dbschema):
         attributes = self.expr.get_attributes(dbschema)
-        if self.attr1.get_attr() not in map(lambda x:x.get_name(), attributes):
+        if self.attr1.get_attr() not in map(lambda x: x.get_name(), attributes):
             raise InvalidAttributeException("Attribute " + self.attr1.get_attr() + " is not in the table.")
 
-        if self.attr2.get_attr() not in map(lambda x:x.get_name(), attributes):
+        if self.attr2.get_attr() not in map(lambda x: x.get_name(), attributes):
             raise InvalidAttributeException("Attribute " + self.attr2.get_attr() + " is not in the table.")
 
         attr1_type = ""
@@ -199,9 +229,15 @@ class Join(Expression):
 
 class Rename(Expression):
 
-    def __init__(self, from_attr: Attribute, to_attr: Attribute, expr: Expression):
-        self.from_attr = from_attr
-        self.to_attr = to_attr
+    def __init__(self, from_attr: Union[Attribute, str], to_attr: Union[Attribute, str], expr: Expression):
+        if isinstance(from_attr, str):
+            self.from_attr = Attribute(from_attr)
+        else:
+            self.from_attr = from_attr
+        if isinstance(to_attr, str):
+            self.to_attr = Attribute(to_attr)
+        else:
+            self.to_attr = to_attr
         self.expr = expr
 
     def toSQL(self, dbschema):
