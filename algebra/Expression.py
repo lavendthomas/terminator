@@ -44,15 +44,15 @@ class Relation(Expression):
 
 class SelectionConstant(Expression):
 
-    def __init__(self, attr: Union[Attribute, str], cst: Union[Constant, str], expr: Expression):
-        if isinstance(attr, str):
-            self.attr = Attribute(attr)
-        else:
+    def __init__(self, attr: Union[Attribute, str], cst: Union[Constant, str, float, int], expr: Expression):
+        if isinstance(attr, Attribute):
             self.attr = attr
-        if isinstance(cst, str):
-            self.cst = Constant(cst)
         else:
+            self.attr = Attribute(attr)
+        if isinstance(cst, Constant):
             self.cst = cst
+        else:
+            self.cst = Constant(cst)
         self.expr = expr
 
     def toSQL(self, dbschema):

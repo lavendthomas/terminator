@@ -1,6 +1,10 @@
+from typing import Union
+import re
+
+
 class Constant:
 
-    def __init__(self, cst):
+    def __init__(self, cst: Union[str, int, float]):
         self.cst = str(cst)
 
         if isinstance(cst, int):
@@ -16,7 +20,9 @@ class Constant:
         return self.type
 
     def toSQL(self, dbschema):
-        return '"' + self.cst + '"'
+        if self.type == "INTEGER" or self.type == "REAL":
+            return str(self.cst)
+        return '"' + re.sub(r'(["\'\\])', r'\\\1', self.cst) + '"'
 
     def get_cst(self):
         return self.cst

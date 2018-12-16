@@ -1,5 +1,6 @@
 from algebra.Expression import *
 from remote.DBSchema import DBSchema
+from typing import Union
 
 
 class SQLiteDB:
@@ -15,11 +16,16 @@ class SQLiteDB:
     def getDB(self):
         return self.dbschema
 
-    def execute(self, query: Expression):
+    def execute(self, query: Union[Expression, str]):
         """
-        query: Expression to execute in the database
+        query: Expression to execute in the database or an SQL request
         """
-        for line in self.cursor.execute(query.toSQL(self.dbschema)):
+        if isinstance(query, Expression):
+            sql = query.toSQL(self.dbschema)
+        else:
+            sql = query
+
+        for line in self.cursor.execute(sql):
             print(line)
 
     def toSQL(self, query: Expression):

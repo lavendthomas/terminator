@@ -1,14 +1,5 @@
 import unittest
-from algebra.Attribute import Attribute
-from algebra.Constant import Constant
-from algebra.Relation import Relation
-from algebra.SelectionAttribute import SelectionAttribute
-from algebra.SelectionConstant import SelectionConstant
-from algebra.Rename import Rename
-from algebra.Project import Project
-from algebra.Join import Join
-from algebra.Union import Union
-from algebra.Difference import Difference
+from algebra.Expression import *
 from remote.DBSchema import DBSchema
 from algebra.Exceptions import *
 
@@ -20,26 +11,26 @@ class TestAlgebraToSQL(unittest.TestCase):
         self.db.add_table("users",
                  ["id", "name",  "pw"],
                  ["TEXT", "TEXT", "TEXT"])
-        self.db.add_table("CITIES",
+        self.db.add_table("cities",
                           ["city"],
                           ["TEXT"])
 
     def test_selection_constant(self):
-        query = SelectionConstant(Attribute("city"), Constant("Mons"), Relation("CITIES"))
-        self.assertEqual(query.toSQL(self.db), "SELECT * FROM CITIES WHERE city = \"Mons\"")
+        query = SelectionConstant(Attribute("city"), Constant("Mons"), Relation("cities"))
+        self.assertEqual(query.toSQL(self.db), "SELECT * FROM cities WHERE city = \"Mons\"")
 
         # Test that the selection doesn't change the attributes
-        self.assertEqual(query.get_attributes(self.db).sort(), Relation("CITIES").get_attributes(self.db).sort())
+        self.assertEqual(query.get_attributes(self.db).sort(), Relation("cities").get_attributes(self.db).sort())
 
     def test_selection_constant_attribute_not_in_table(self):
         # Test if the attribute is not in the table
-        badquery = SelectionConstant(Attribute("notacity"), Constant("Mons"), Relation("CITIES"))
+        badquery = SelectionConstant(Attribute("notacity"), Constant("Mons"), Relation("cities"))
         with self.assertRaises(InvalidAttributeException):
             badquery.toSQL(self.db)
 
     def test_selection_constant_constant_different_type_as_attribute(self):
         # Test if the constant is not the same type as the attribute
-        badquery = SelectionConstant(Attribute("city"), Constant(1), Relation("CITIES"))
+        badquery = SelectionConstant(Attribute("city"), Constant(1), Relation("cities"))
         with self.assertRaises(DifferentTypeException):
             badquery.toSQL(self.db)
 
@@ -53,6 +44,6 @@ class TestAlgebraToSQL(unittest.TestCase):
 
     def test_selection_attribute_attribute_not_in_table(self):
         # Test if the attribute is not in the table
-        badquery = SelectionAttribute(Attribute("id"), Attribute("name"), Relation("users")
+        badquery = SelectionAttribute(Attribute("notid"), Attribute("name"), Relation("users"))
         with self.assertRaises(InvalidAttributeException):
             badquery.toSQL(self.db)
