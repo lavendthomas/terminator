@@ -148,7 +148,7 @@ class Project(Expression):
     """
     columns: set of attributes to keep
     """
-    def __init__(self, columns: list, expr: Expression):
+    def __init__(self, columns: List[str], expr: Expression):
         self.columns = columns
         self.expr = expr
 
