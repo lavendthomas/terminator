@@ -3,7 +3,8 @@ from algebra.Constant import Constant
 from algebra.Exceptions import *
 from remote.DBSchema import *
 from copy import deepcopy
-from typing import Union
+from typing import Union as _Union
+from typing import List
 
 
 class Expression:
@@ -22,6 +23,21 @@ class Expression:
 
     def __str__(self):
         return ""
+
+    def __add__(self, other):
+        return Union(self, other)
+
+    def __sub__(self, other):
+        return Difference(self, other)
+
+    def __mul__(self, other):
+        return Join(self, other)
+
+    def __getitem__(self, *items):
+        attrs = []
+        attrs.extend(items)
+        print(attrs)
+        return Project(attrs, self)
 
 
 class Relation(Expression):
@@ -44,7 +60,7 @@ class Relation(Expression):
 
 class SelectionConstant(Expression):
 
-    def __init__(self, attr: Union[Attribute, str], cst: Union[Constant, str, float, int], expr: Expression):
+    def __init__(self, attr: _Union[Attribute, str], cst: _Union[Constant, str, float, int], expr: Expression):
         if isinstance(attr, Attribute):
             self.attr = attr
         else:
@@ -83,7 +99,7 @@ class SelectionConstant(Expression):
 
 class SelectionAttribute(Expression):
 
-    def __init__(self, attr1: Union[Attribute, str], attr2: Union[Attribute, str], expr: Expression):
+    def __init__(self, attr1: _Union[Attribute, str], attr2: _Union[Attribute, str], expr: Expression):
         if isinstance(attr1, str):
             self.attr1 = Attribute(attr1)
         else:
@@ -203,11 +219,12 @@ class Join(Expression):
 
         conditions = ""
         if len(t2_attributes) > 0:
-            conditions += " WHERE "
             for i in range(len(common_attributes)):
                 conditions += "t1." + common_attributes[i].get_name() + " = t2." + common_attributes[i].get_name()
                 if i != len(common_attributes) - 1:
                     conditions += " AND "
+        if len(conditions) != 0:
+            conditions = " WHERE " + conditions
 
         return "SELECT " + select_attributes + " FROM (" + self.expr1.toSQL(dbschema) + ") AS t1, (" +\
                self.expr2.toSQL(dbschema) + ") AS t2" + conditions
@@ -229,7 +246,7 @@ class Join(Expression):
 
 class Rename(Expression):
 
-    def __init__(self, from_attr: Union[Attribute, str], to_attr: Union[Attribute, str], expr: Expression):
+    def __init__(self, from_attr: _Union[Attribute, str], to_attr: _Union[Attribute, str], expr: Expression):
         if isinstance(from_attr, str):
             self.from_attr = Attribute(from_attr)
         else:
