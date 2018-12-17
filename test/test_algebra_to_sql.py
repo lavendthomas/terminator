@@ -1,7 +1,5 @@
 import unittest
-from algebra.Expression import *
-from remote.DBSchema import DBSchema
-from algebra.Exceptions import *
+from algebra import *
 
 
 class TestAlgebraToSQL(unittest.TestCase):
@@ -47,3 +45,14 @@ class TestAlgebraToSQL(unittest.TestCase):
         badquery = SelectionAttribute(Attribute("notid"), Attribute("name"), Relation("users"))
         with self.assertRaises(InvalidAttributeException):
             badquery.toSQL(self.db)
+
+    def test_project(self):
+        query = Project(["id"], Relation("users"))
+        print(query.get_attributes(self.db))
+        self.assertTrue("id" in map(lambda x: x.get_name(), query.get_attributes(self.db)))
+        self.assertFalse("name" in map(lambda x: x.get_name(), query.get_attributes(self.db)))
+
+    def test_projet_empty(self):
+        query = Project([], Relation("users"))
+        print(query.get_attributes(self.db))
+        print(query.toSQL(self.db))

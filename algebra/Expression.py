@@ -164,7 +164,10 @@ class Project(Expression):
             if i != len(self.columns)-1:
                 select_attributes += ", "
 
-        return "SELECT " + select_attributes + " FROM (" + self.expr.toSQL(dbschema) + ")"
+        if len(self.columns) == 0:
+            select_attributes = "NULL"
+
+        return "SELECT DISTINCT " + select_attributes + " FROM (" + self.expr.toSQL(dbschema) + ")"
 
     def get_attributes(self, dbschema):
         attrs = deepcopy(self.expr.get_attributes(dbschema))
