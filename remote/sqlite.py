@@ -28,7 +28,7 @@ class SQLiteDB:
         for line in self.cursor.execute(sql):
             print(line)
 
-        if "table" in sql.islower():
+        if "table" in sql.lower():
             self.dbschema = DBSchema(self.filename)
 
     def toSQL(self, query: Expression):
