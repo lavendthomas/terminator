@@ -36,7 +36,6 @@ class Expression:
     def __getitem__(self, *items):
         attrs = []
         attrs.extend(items)
-        print(attrs)
         return Project(attrs, self)
 
 
@@ -219,6 +218,9 @@ class Join(Expression):
             select_attributes += "t2." + t2_attributes[i].get_name()
             if i != len(t2_attributes) - 1:
                 select_attributes += ", "
+
+        if len(select_attributes) == 0:
+            select_attributes = "NULL"
 
         conditions = ""
         if len(t2_attributes) > 0:
