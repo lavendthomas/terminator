@@ -32,7 +32,6 @@ class TestAlgebraToSQL(unittest.TestCase):
         with self.assertRaises(DifferentTypeException):
             badquery.toSQL(self.db)
 
-
     def test_selection_attribute(self):
         query = SelectionAttribute(Attribute("id"), Attribute("name"), Relation("users"))
         self.assertEqual(query.toSQL(self.db),"SELECT * FROM users WHERE id = name")
@@ -48,11 +47,29 @@ class TestAlgebraToSQL(unittest.TestCase):
 
     def test_project(self):
         query = Project(["id"], Relation("users"))
-        print(query.get_attributes(self.db))
         self.assertTrue("id" in map(lambda x: x.get_name(), query.get_attributes(self.db)))
         self.assertFalse("name" in map(lambda x: x.get_name(), query.get_attributes(self.db)))
 
-    def test_projet_empty(self):
+    def test_project_empty(self):
         query = Project([], Relation("users"))
-        print(query.get_attributes(self.db))
-        print(query.toSQL(self.db))
+        self.assertTrue(len(query.get_attributes(self.db)) == 0)
+        self.assertEqual(query.toSQL(self.db), "SELECT DISTINCT NULL FROM (users)")
+
+    def test_project_shortcut(self):
+        query1 = Project(["id"], Relation("users"))
+        query2 = Relation("users")["id"]
+        self.assertEqual(query1.toSQL(self.db), query2.toSQL(self.db))
+
+    def test_empty_join(self):
+        query = Join(Project([], Relation("users")),Project([], Relation("users")))
+        self.assertTrue(len(query.get_attributes(self.db)) == 0)
+
+    def test_join_shortcut(self):
+        query1 = Join(Relation("users"), Relation("users"))
+        query2 = Relation("users") * Relation("users")
+        self.assertEqual(query1.toSQL(self.db), query2.toSQL(self.db))
+
+    def test_rename(self):
+        query = Rename("id", "notid", Relation("users"))
+        self.assertFalse("id" in map(lambda x: x.get_name(), query.get_attributes(self.db)))
+        self.assertTrue("notid" in map(lambda x: x.get_name(), query.get_attributes(self.db)))
