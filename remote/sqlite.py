@@ -10,7 +10,8 @@ class SQLiteDB:
     """
     def __init__(self, db: str):
         self.filename = db
-        self.cursor = c = sqlite3.connect(db).cursor()
+        self.conn = sqlite3.connect(db)
+        self.cursor = self.conn.cursor()
         self.dbschema = DBSchema(db)
 
     def getDB(self):
@@ -30,6 +31,9 @@ class SQLiteDB:
 
         if "table" in sql.lower():
             self.dbschema = DBSchema(self.filename)
+
+    def commit(self):
+        self.conn.commit()
 
     def toSQL(self, query: Expression):
         return query.toSQL(self.dbschema)
