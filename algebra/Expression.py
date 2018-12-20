@@ -330,8 +330,8 @@ class Union(Expression):
             if i != len(attrs1) - 1 :
                 select_attributes += ", "
 
-        return "(SELECT " + select_attributes + " FROM (" + self.expr1.toSQL(dbschema) + ")) UNION (SELECT " +\
-               select_attributes + " FROM (" + self.expr2.toSQL(dbschema) + "))"
+        return "SELECT " + select_attributes + " FROM (" + self.expr1.toSQL(dbschema) + ") UNION SELECT " +\
+               select_attributes + " FROM (" + self.expr2.toSQL(dbschema) + ")"
 
     def get_attributes(self, dbschema):
         return deepcopy(self.expr1.get_attributes(dbschema))
