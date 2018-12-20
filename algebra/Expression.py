@@ -213,7 +213,7 @@ class Join(Expression):
             if i != len(attrs1) - 1:
                 select_attributes += ", "
         for i in range(len(t2_attributes)):
-            if i == 0:
+            if i == 0 and len(attrs1) != 0:
                 select_attributes += ", "
             select_attributes += "t2." + t2_attributes[i].get_name()
             if i != len(t2_attributes) - 1:
