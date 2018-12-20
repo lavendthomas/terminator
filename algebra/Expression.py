@@ -35,7 +35,13 @@ class Expression:
 
     def __getitem__(self, *items):
         attrs = []
-        attrs.extend(items)
+        for attr in items:
+            if isinstance(attr, str):
+                attrs.append(attr)
+            else:
+                for a in attr:
+                    attrs.append(a)
+
         return Project(attrs, self)
 
 
@@ -157,6 +163,7 @@ class Project(Expression):
         select_attributes = ""
         for i in range(len(self.columns)):
             if self.columns[i] not in map(lambda x: x.get_name(), attrs):
+                print(self.columns[i], type(self.columns[i]))
                 raise InvalidAttributeException(self.columns[i] + " not in " + str(self.expr))
 
             select_attributes += self.columns[i]
