@@ -57,7 +57,7 @@ Reduces the attributes of the table to the ones mentioned.
 
 The shortcut `Expression[list_of_attributes]` is also available.
 
-For Example, the two following queries are similar:
+For example, the two following queries are similar:
 ```
 q1 = Project(["id","name"], Relation("users"))
 q2 = Relation("users")["id", "name"]
@@ -72,7 +72,7 @@ Merges to tables together.
 
 The shortcut `Expression1 * Expression2` is also available.
 
-For Example, the two following queries are similar:
+For example, the two following queries are similar:
 ```
 q1 = Join(Relation("students"), Relation("marks"))
 q2 = Relation("students") * Relation("marks")
@@ -98,7 +98,7 @@ Returns tuples from the 2 expressions which have the same attributes.
 
 The shortcut `Expression1 + Expression2` is also available.
 
-For Example, the two following queries are similar:
+For example, the two following queries are similar:
 ```
 s1 = SelectConstant("name", "Alice", Relation("users"))
 s2 = SelectConstant("name", "Bob", Relation("users"))
@@ -116,7 +116,7 @@ Returns tuples from expression1 that are not in expression2 where expression1 an
 
 The shortcut `Expression1 - Expression2` is also available.
 
-For Example, the two following queries are similar:
+For example, the two following queries are similar:
 ```
 s = SelectConstant("name", "Alice", Relation("users"))
 
