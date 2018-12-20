@@ -14,7 +14,7 @@ class Constant:
         elif isinstance(cst, str):
             self.type = "TEXT"
         else:
-            self.type = "NONE"      # TODO handle unknown formats
+            self.type = "NONE"
 
     def get_type(self):
         return self.type

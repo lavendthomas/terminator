@@ -4,7 +4,6 @@ class DBSchema:
 
     def __init__(self, db=None):
         if db is not None:
-            # TODO load tables from database
             # create table to convert SQL types to our types (e.g. VARCHAR -> TEXT)
             c = sqlite3.connect(db).cursor()
 
@@ -37,7 +36,7 @@ class DBSchema:
         elif "blob" in sql_type:
             return "BLOB"
         else:
-            return                      # TODO handle unknown formats
+            return
 
 
     def add_table(self, name, attributes : list, types : list):
