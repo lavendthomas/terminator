@@ -4,6 +4,8 @@
 
 This library allows you to write database queries and execute them in a SQLite database. The SPJRUD expressions are first checked according to a database pattern and can then be translated to SQL.
 
+Please note that NULL values are not supported.
+
 This software is written as part of a project for the course of Databases I, given by Professor Jef Wijsen at the University of Mons (UMONS).
 
 ## Usage
@@ -112,7 +114,7 @@ q2 = s1 + s2
 `Difference(expression1, expression2)`
 
 Returns tuples from expression1 that are not in expression2 where expression1 and expression2 must have the same attributes.
-`expression1` and `expression2` are the 2 tables on which the difference is done. The Difference with NULL values is not supported.
+`expression1` and `expression2` are the 2 tables on which the difference is done.
 
 The shortcut `Expression1 - Expression2` is also available.
 
