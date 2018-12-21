@@ -1,17 +1,24 @@
 
 
-class NotMatchingAttributesException(Exception): # != names, types or number in 2 tables
-
+class NotMatchingAttributesException(Exception):
+    """
+    Exception is raised when names or types of attributes of two tables are not matching or when the counts of
+    attributes of two tables are not matching
+    """
     pass
 
 
-class InvalidAttributeException(Exception):     # Missing attribute in table or already in the table
-
+class InvalidAttributeException(Exception):
+    """
+    Exception is raised when attribute does not correspond with rules of relational algebra
+    """
     pass
 
 
-class DifferentTypeException(Exception):        # type(cst) != type(attr) or type(attr1) != type(attr2)
-
+class DifferentTypeException(Exception):
+    """
+    Exception is raised when types of two attributes or types of an attribute and a constant are not the same
+    """
     pass
 
 
