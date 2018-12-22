@@ -35,12 +35,13 @@ class SQLiteDB:
         else:
             sql = query
 
+        empty = True
         for line in self.cursor.execute(sql):
-            empty = True
-            if print(line):
-                empty = False
-            if empty:
-                print("Empty set")
+            empty = False
+            print(line)
+
+        if empty:
+            print("Empty set")
 
         if "table" in sql.lower():
             self.dbschema = DBSchema(self.filename)
