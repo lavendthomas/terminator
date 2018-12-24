@@ -125,3 +125,8 @@ s = SelectConstant("name", "Alice", Relation("users"))
 q1 = Difference(Relation("users"), s)
 q2 = Relation("users") - s
 ```
+
+
+## Authors
+
+Written by Lavend'Homme Thomas and Vítová Natálie.
