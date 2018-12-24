@@ -19,7 +19,7 @@ class SQLiteDB:
         self.dbschema = DBSchema(db)
 
     def getDB(self):
-        """f
+        """
         :return: Dbschema
         """
         return self.dbschema
